@@ -45,7 +45,7 @@
 
 
 // Gradients
-.gradient (@origin: left, @start: #ffffff, @stop: #000000) {
+.gradient (@origin: top, @start: #ffffff, @stop: transparent) {
     background-color: @start;
     background-image: -webkit-linear-gradient(@origin, @start, @stop);
     background-image: -moz-linear-gradient(@origin, @start, @stop);
@@ -54,6 +54,13 @@
     background-image: linear-gradient(@origin, @start, @stop);
 }
 
+.transparent-gradient (@start: 0, @stop: 1) {
+    background: -webkit-linear-gradient(bottom, rgba(255,255,255,@start), rgba(255,255,255,@stop));
+    background: -moz-linear-gradient(top, rgba(255,255,255,@start), rgba(255,255,255,@stop));
+    background: -o-linear-gradient(top, rgba(255,255,255,@start), rgba(255,255,255,@stop));
+    background: -ms-linear-gradient(top, rgba(255,255,255,@start), rgba(255,255,255,@stop));
+    background: linear-gradient(to top, rgba(255,255,255,@start), rgba(255,255,255,@stop));
+}
 
 .quick-gradient (@origin: left, @alpha: 0.2) {
     background-image: -webkit-linear-gradient(@origin, rgba(0,0,0,0.0), rgba(0,0,0,@alpha));
