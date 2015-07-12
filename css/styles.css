@@ -429,13 +429,32 @@ td,
 th {
   padding: 0;
 }
-/*!
- * Preboot v2
- *
- * Open sourced under MIT license by @mdo.
- * Some variables and mixins from Bootstrap (Apache 2 license).
- * http://getpreboot.com/
- */
+/*@import "preboot.less";*/
+/*.font-face( @family-name, @font-path, @font-weight:normal, @font-style:normal, @include-svg:false ) when not (@include-svg) {
+	@font-face {
+	    font-family: @family-name;
+	    src: url('@{font-path}.eot');
+	    src: url('@{font-path}.eot?#iefix') format('embedded-opentype'),
+	         url('@{font-path}.woff') format('woff'),
+	         url('@{font-path}.ttf') format('truetype');
+	    font-weight: @font-weight;
+	    font-style: @font-style;
+	}
+}
+
+
+.font-face( @family-name, @font-path, @font-weight:normal, @font-style:normal, @include-svg:false ) when (@include-svg) {
+	@font-face {
+	    font-family: @family-name;
+	    src: url('@{font-path}.eot');
+	    src: url('@{font-path}.eot?#iefix') format('embedded-opentype'),
+	         url('@{font-path}.woff') format('woff'),
+	         url('@{font-path}.ttf') format('truetype'),
+			 url('@{font-path}.svg#@{family-name}') format('svg');
+	    font-weight: @font-weight;
+	    font-style: @font-style;
+	}
+}*/
 /*	Nesting mixins inside a ruleset with a #namespace.  */
 /**********************************/
 /***	   DECLARE VARIABLES	 ***/
@@ -460,18 +479,15 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  background: #ffffff;
-  background: transparent\9;
-  background: rgba(255, 255, 255, 0.8);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#66000000, endColorstr=#66000000, GradientType=1);
-  zoom: 1;
   -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  /* Prevent background color leak outs */
   -webkit-background-clip: padding-box;
+  -moz-border-radius: 10px;
   -moz-background-clip: padding;
+  border-radius: 10px;
   background-clip: padding-box;
+  -webkit-box-shadow: 3px 3px 20px 3px 0.7px;
+  -moz-box-shadow: 3px 3px 20px 3px 0.7px;
+  box-shadow: 3px 3px 20px 3px 0.7px;
   -webkit-box-shadow: 3px 3px 20px 3px rgba(0, 0, 0, 0.7);
   -moz-box-shadow: 3px 3px 20px 3px rgba(0, 0, 0, 0.7);
   box-shadow: 3px 3px 20px 3px rgba(0, 0, 0, 0.7);
@@ -485,25 +501,52 @@ body {
   text-shadow: 0 1px 0 #cccccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbbbbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaaaaa, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
   font-size: 36px;
   text-align: center;
-  color: #191919;
+  color: #000;
 }
 #main img {
   max-width: 500px;
   width: 90%;
   margin-bottom: 25px;
   -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  /* Prevent background color leak outs */
   -webkit-background-clip: padding-box;
+  -moz-border-radius: 5px;
   -moz-background-clip: padding;
+  border-radius: 5px;
   background-clip: padding-box;
   display: block;
   margin-left: auto;
   margin-right: auto;
+  -webkit-box-shadow: 7px 7px 20px 0 0.6px;
+  -moz-box-shadow: 7px 7px 20px 0 0.6px;
+  box-shadow: 7px 7px 20px 0 0.6px;
   -webkit-box-shadow: 7px 7px 20px 0 rgba(0, 0, 0, 0.6);
   -moz-box-shadow: 7px 7px 20px 0 rgba(0, 0, 0, 0.6);
   box-shadow: 7px 7px 20px 0 rgba(0, 0, 0, 0.6);
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  -o-transition: 1s;
+  transition: 1s;
+}
+#main img:hover {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100);
+  -moz-filter: grayscale(100);
+  -ms-filter: grayscale(100);
+  -o-filter: grayscale(100);
+  filter: grayscale(100);
+  filter: url(grayscale.svg);
+  /* Firefox 4+ */
+  filter: gray;
+  /* IE 6-9 */
+  /* Firefox 10+, Firefox on Android */
+  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#grayscale");
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  -o-transition: 1s;
+  transition: 1s;
 }
 footer {
   width: 50%;

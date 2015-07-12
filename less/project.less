@@ -92,7 +92,8 @@ textarea {
 /**********************************/
 
 @import "normalize.less";
-@import "preboot.less";
+/*@import "preboot.less";*/
+@import "lesshat.less";
 @import "my-mixens.less";
 
 
@@ -118,8 +119,7 @@ textarea {
    ========================================================================== */
 
 body {
-    .background-cover('../images/background.jpg');
-
+    .background-cover ('../images/background.jpg');
 }
 
 #content{
@@ -129,12 +129,10 @@ body {
     background: #eee;
     border:1px solid #666;
     padding: 0 25px 25px 25px;
-    .center-block();
-    .opacity-background(0.8);
-    .border-radius(10px);
-    .box-shadow (3px, 3px, 20px, 3px, 0.7);
-
-    .transparent-gradient (0.2, 0.8);
+    .center-block ();
+    .border-radius (10px);
+    .box-shadow (3px, 3px, 20px, 3px, .7);
+    .transparent-gradient (.2, .8);
 
 }
 
@@ -142,24 +140,30 @@ body {
     .3D-text();
     font-size: 36px;
     text-align: center;
-    color: @black-90;
+    color: #000;
 }
 
-#main img{
+#main img {
     max-width: 500px;
     width: 90%;
     display: block;
     margin-bottom: 25px;
-    .border-radius(5px);
-    .center-block();
-    .box-shadow (7px, 7px, 20px, 0, 0.6);
+    .border-radius (5px);
+    .center-block ();
+    .box-shadow (7px, 7px, 20px, 0, .6);
+    .transition (1);
+}
+
+#main img:hover {
+    .grayscale (100);
+    .transition (1);
 }
 
 footer {
     width:50%;
     text-align: center;
     color:#666;
-    .center-block();
+    .center-block ();
 }
 
 
