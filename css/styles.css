@@ -430,31 +430,15 @@ th {
   padding: 0;
 }
 /*@import "preboot.less";*/
-/*.font-face( @family-name, @font-path, @font-weight:normal, @font-style:normal, @include-svg:false ) when not (@include-svg) {
-	@font-face {
-	    font-family: @family-name;
-	    src: url('@{font-path}.eot');
-	    src: url('@{font-path}.eot?#iefix') format('embedded-opentype'),
-	         url('@{font-path}.woff') format('woff'),
-	         url('@{font-path}.ttf') format('truetype');
-	    font-weight: @font-weight;
-	    font-style: @font-style;
-	}
+/*
+.grayscale(...) {
+  @process: ~`(function(e){e=e||"0";var r=/\d/gi,t=/(?:\s|^)(\.?\d+\.?\d*)(?![^(]*\)|\w|%|\.)/gi;return r.test(e)&&(e=e.replace(t,function(e){return 0==e&&e||e+"%"})),e})((function(){var e="@{arguments}";return e=e.replace(/^\[|\]$/g,"")})())`;
+  -webkit-filter: grayscale(@process);
+  -moz-filter: grayscale(@process);
+  -ms-filter: grayscale(@process);
+  filter: grayscale(@process);
 }
-
-
-.font-face( @family-name, @font-path, @font-weight:normal, @font-style:normal, @include-svg:false ) when (@include-svg) {
-	@font-face {
-	    font-family: @family-name;
-	    src: url('@{font-path}.eot');
-	    src: url('@{font-path}.eot?#iefix') format('embedded-opentype'),
-	         url('@{font-path}.woff') format('woff'),
-	         url('@{font-path}.ttf') format('truetype'),
-			 url('@{font-path}.svg#@{family-name}') format('svg');
-	    font-weight: @font-weight;
-	    font-style: @font-style;
-	}
-}*/
+*/
 /*	Nesting mixins inside a ruleset with a #namespace.  */
 /**********************************/
 /***	   DECLARE VARIABLES	 ***/
@@ -462,117 +446,52 @@ th {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+html {
+  overflow-y: scroll;
+  -ms-overflow-style: scrollbar;
+}
+html,
 body {
-  background: url('../images/background.jpg') no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
 }
-#content {
-  width: 50%;
-  min-height: 500px;
-  margin-top: 30px;
-  background: #eee;
-  border: 1px solid #666;
-  padding: 0 25px 25px 25px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  -webkit-border-radius: 10px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 10px;
-  -moz-background-clip: padding;
-  border-radius: 10px;
-  background-clip: padding-box;
-  -webkit-box-shadow: 3px 3px 20px 3px 0.7px;
-  -moz-box-shadow: 3px 3px 20px 3px 0.7px;
-  box-shadow: 3px 3px 20px 3px 0.7px;
-  -webkit-box-shadow: 3px 3px 20px 3px rgba(0, 0, 0, 0.7);
-  -moz-box-shadow: 3px 3px 20px 3px rgba(0, 0, 0, 0.7);
-  box-shadow: 3px 3px 20px 3px rgba(0, 0, 0, 0.7);
-  background: -webkit-linear-gradient(bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.8));
-  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.8));
-  background: -o-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.8));
-  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.8));
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.8));
+header {
+  width: 100%;
+  height: 70px;
+  color: #FFFFFF;
+  background: #D50000;
+  padding: 20px 0 0 25px;
 }
-#content h1 {
-  text-shadow: 0 1px 0 #cccccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbbbbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaaaaa, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
-  font-size: 36px;
-  text-align: center;
-  color: #000;
+h1 {
+  margin: 0px;
 }
-#main img {
-  max-width: 500px;
-  width: 90%;
-  margin-bottom: 25px;
-  -webkit-border-radius: 5px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 5px;
-  -moz-background-clip: padding;
-  border-radius: 5px;
-  background-clip: padding-box;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  -webkit-box-shadow: 7px 7px 20px 0 0.6px;
-  -moz-box-shadow: 7px 7px 20px 0 0.6px;
-  box-shadow: 7px 7px 20px 0 0.6px;
-  -webkit-box-shadow: 7px 7px 20px 0 rgba(0, 0, 0, 0.6);
-  -moz-box-shadow: 7px 7px 20px 0 rgba(0, 0, 0, 0.6);
-  box-shadow: 7px 7px 20px 0 rgba(0, 0, 0, 0.6);
-  -webkit-transition: 1s;
-  -moz-transition: 1s;
-  -o-transition: 1s;
-  transition: 1s;
-}
-#main img:hover {
-  -webkit-filter: grayscale(100%);
-  -moz-filter: grayscale(100%);
-  -ms-filter: grayscale(100%);
-  filter: grayscale(100%);
-  -webkit-filter: grayscale(100);
-  -moz-filter: grayscale(100);
-  -ms-filter: grayscale(100);
-  -o-filter: grayscale(100);
-  filter: grayscale(100);
-  filter: url(grayscale.svg);
-  /* Firefox 4+ */
-  filter: gray;
-  /* IE 6-9 */
-  /* Firefox 10+, Firefox on Android */
-  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#grayscale");
-  -webkit-transition: 1s;
-  -moz-transition: 1s;
-  -o-transition: 1s;
-  transition: 1s;
+main {
+  width: 80%;
+  margin: auto;
+  background: #FFFFFF;
+  padding: 30px 25px 50px 25px;
+  font-size: 16px;
+  border-left: 1px solid #BDBDBD;
+  border-right: 1px solid #BDBDBD;
+  min-height: 900px;
+  /* Get rid of this after adding some content */
 }
 footer {
-  width: 50%;
+  width: 100%;
+  height: 75px;
   text-align: center;
-  color: #666;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  background: #424242;
+  color: #E0E0E0;
+  padding-top: 30px;
+  letter-spacing: 1px;
 }
-/***********************************/
-/***        Media Queries        ***/
-/***********************************/
-@media (max-width: 768px) {
-  #content {
-    width: 80%;
-  }
-}
-@media (max-width: 550px) {
-  #content {
-    width: 90%;
-  }
-  #content h1 {
-    font-size: 28px;
-  }
-  footer {
-    width: 80%;
+/*******************************************/
+/***        Bootstraps Viewports        ***/
+/*****************************************/
+@media only screen and (max-width: 768px) {
+  main {
+    width: 100%;
+    border: none;
   }
 }
 /* ==========================================================================

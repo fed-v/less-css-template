@@ -81,6 +81,7 @@ textarea {
 }
 
 
+
 /* ==========================================================================
    Less CSS VARIABLE DECLARATIONS AND MIXINS
    ========================================================================== */
@@ -92,7 +93,7 @@ textarea {
 /**********************************/
 
 @import "normalize.less";
-/*@import "preboot.less";*/
+/*@import "preboot.less";*/    // Alternative Less Library
 @import "lesshat.less";
 @import "my-mixens.less";
 
@@ -105,10 +106,27 @@ textarea {
  /***	   DECLARE VARIABLES	 ***/
 /**********************************/
 
+// Grayscale
+@black-10:                 darken(#fff, 10%);
+@black-20:                 darken(#fff, 20%);
+@black-30:                 darken(#fff, 30%);
+@black-40:                 darken(#fff, 40%);
+@black-50:                 darken(#fff, 50%);
+@black-60:                 darken(#fff, 60%);
+@black-70:                 darken(#fff, 70%);
+@black-80:                 darken(#fff, 80%);
+@black-90:                 darken(#fff, 90%);
+
+// Brand colors
+@brand-primary:           #428bca;
+@brand-success:           #5cb85c;
+@brand-warning:           #f0ad4e;
+@brand-danger:            #d9534f;
+@brand-info:              #5bc0de;
+
 @base-color: blue;
 @background-color: cyan;
 @accent-color: orange;
-@accent-color: #82c9ed;
 
 
 
@@ -118,89 +136,87 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-body {
-    .background-cover ('../images/background.jpg');
+
+html{
+	overflow-y: scroll;
+   -ms-overflow-style: scrollbar;
 }
 
-#content{
-    width:50%;
-    min-height: 500px;
-    margin-top: 30px;
-    background: #eee;
-    border:1px solid #666;
-    padding: 0 25px 25px 25px;
-    .center-block ();
-    .border-radius (10px);
-    .box-shadow (3px, 3px, 20px, 3px, .7);
-    .transparent-gradient (.2, .8);
 
+html, body{
+	height: 100%;
+	-webkit-font-smoothing: antialiased;
 }
 
-#content h1 {
-    .3D-text();
-    font-size: 36px;
-    text-align: center;
-    color: #000;
+
+header {
+   width:100%;
+   height: 70px;
+   color: #FFFFFF;
+   background: #D50000;
+   padding: 20px 0 0 25px;
 }
 
-#main img {
-    max-width: 500px;
-    width: 90%;
-    display: block;
-    margin-bottom: 25px;
-    .border-radius (5px);
-    .center-block ();
-    .box-shadow (7px, 7px, 20px, 0, .6);
-    .transition (1);
+
+h1 {
+    margin:0px;
 }
 
-#main img:hover {
-    .grayscale (100);
-    .transition (1);
+
+main {
+   width: 80%;
+   margin: auto;
+   background: #FFFFFF;
+   padding: 30px 25px 50px 25px;
+   font-size: 16px;
+   border-left: 1px solid #BDBDBD;
+   border-right: 1px solid #BDBDBD;
+
+   min-height: 900px;  /* Get rid of this after adding some content */
 }
+
 
 footer {
-    width:50%;
+    width:100%;
+    height: 75px;
     text-align: center;
-    color:#666;
-    .center-block ();
+    background: #424242;
+    color: #E0E0E0;
+    padding-top: 30px;
+    letter-spacing: 1px;
 }
 
 
 
 
-/***********************************/
-/***        Media Queries        ***/
-/***********************************/
+/*******************************************/
+/***        Bootstraps Viewports        ***/
+/*****************************************/
 
-@media (max-width: 768px){
+// Extra small
+@media only screen and (max-width: 768px){
 
-    #content{
-        width:80%;
+    main {
+       width: 100%;
+       border: none;
     }
 
 }
 
-
-@media (max-width: 550px){
-
-    #content{
-        width:90%;
-    }
-
-    #content h1 {
-        font-size: 28px;
-    }
-
-    footer {
-        width:80%;
-    }
+// Small
+@media only screen and (min-width: 768px) and (max-width: 992px){
 
 }
 
+// Medium
+@media only screen and (min-width: 992px) and (max-width: 1200px){
 
+}
 
+// Large
+@media only screen and (min-width: 1200px){
 
+}
 
 
 

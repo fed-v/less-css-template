@@ -62,35 +62,6 @@
     background-image: linear-gradient(@origin, rgba(0,0,0,0.0), rgba(0,0,0,@alpha));
 }
 
-
-// Typography
-/*.font-face( @family-name, @font-path, @font-weight:normal, @font-style:normal, @include-svg:false ) when not (@include-svg) {
-	@font-face {
-	    font-family: @family-name;
-	    src: url('@{font-path}.eot');
-	    src: url('@{font-path}.eot?#iefix') format('embedded-opentype'),
-	         url('@{font-path}.woff') format('woff'),
-	         url('@{font-path}.ttf') format('truetype');
-	    font-weight: @font-weight;
-	    font-style: @font-style;
-	}
-}
-
-
-.font-face( @family-name, @font-path, @font-weight:normal, @font-style:normal, @include-svg:false ) when (@include-svg) {
-	@font-face {
-	    font-family: @family-name;
-	    src: url('@{font-path}.eot');
-	    src: url('@{font-path}.eot?#iefix') format('embedded-opentype'),
-	         url('@{font-path}.woff') format('woff'),
-	         url('@{font-path}.ttf') format('truetype'),
-			 url('@{font-path}.svg#@{family-name}') format('svg');
-	    font-weight: @font-weight;
-	    font-style: @font-style;
-	}
-}*/
-
-
 /*	Nesting mixins inside a ruleset with a #namespace.  */
 #Font-family{
   .Serif (@weight: normal, @size: 14px, @lineHeight: 20px) {
