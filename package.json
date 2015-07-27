@@ -1,0 +1,39 @@
+{
+  "name": "less-css-template",
+  "version": "2.1.0",
+  "description": "A Less front end template",
+  "main": "gulpfile.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fed-v/less-css-template.git"
+  },
+  "keywords": [
+    "less",
+    "css",
+    "html",
+    "frontend",
+    "template"
+  ],
+  "author": "Federico Venturino",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fed-v/less-css-template.git/issues"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.7.7",
+    "css": "^2.1.0",
+    "css-parse": "^2.0.0",
+    "gulp": "^3.8.2",
+    "gulp-autoprefixer": "2.3.1",
+    "gulp-csslint": "^0.1.4",
+    "gulp-jshint": "^1.11.2",
+    "gulp-less": "^3.0.3",
+    "gulp-minify-css": "^1.1.6",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.5",
+    "gulp-watch": "^4.2.4"
+  }
+}
