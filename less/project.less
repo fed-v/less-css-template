@@ -95,40 +95,8 @@ textarea {
 /*@import "preboot.less";*/    // Alternative Less Library
 @import "normalize.less";
 @import "lesshat.less";
+@import "variables";
 @import "my-mixens.less";
-
-
-
-
-
-
-  /**********************************/
- /***	   DECLARE VARIABLES	 ***/
-/**********************************/
-
-// Grayscale
-@black-10:                 darken(#fff, 10%);
-@black-20:                 darken(#fff, 20%);
-@black-30:                 darken(#fff, 30%);
-@black-40:                 darken(#fff, 40%);
-@black-50:                 darken(#fff, 50%);
-@black-60:                 darken(#fff, 60%);
-@black-70:                 darken(#fff, 70%);
-@black-80:                 darken(#fff, 80%);
-@black-90:                 darken(#fff, 90%);
-
-// Brand colors
-@brand-primary:           #428bca;
-@brand-success:           #5cb85c;
-@brand-warning:           #f0ad4e;
-@brand-danger:            #d9534f;
-@brand-info:              #5bc0de;
-
-// Specific colors
-@base-color: blue;
-@background-color: cyan;
-@accent-color: orange;
-
 
 
 
@@ -154,7 +122,7 @@ header {
    width:100%;
    height: 70px;
    color: #FFFFFF;
-   background: #3F51B5;
+   background: @base-color;
    padding: 20px 0 0 25px;
 }
 

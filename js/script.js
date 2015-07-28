@@ -4,7 +4,7 @@
 jQuery(document).ready(function ($) {
 
     'use strict';
-
+    
 
     /****************************************/
     /***        Set copyright date       ***/
@@ -15,5 +15,5 @@ jQuery(document).ready(function ($) {
 
     //EXTRACT FOUR DIGIT YEAR AND ADD TO SPAN
     document.getElementById('year').innerHTML = date.getFullYear();
-    
+
 });
