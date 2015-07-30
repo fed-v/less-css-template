@@ -1,4 +1,5 @@
-node_modules*
-npm-debug*
 .DS_STORE
-css
+node_modules/*
+npm-debug*
+.tmp
+Thumbs.bd

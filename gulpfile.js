@@ -13,18 +13,19 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     css = require('css'),
     browserSync = require('browser-sync'),
-    browserReload = browserSync.reload;
+    browserReload = browserSync.reload,
+    minifyHTML = require('gulp-minify-html');
 
 
 // Less task
 gulp.task('pre-process', function(){
-      return gulp.src('less/project.less')
+      return gulp.src('./Builds/Dev/less/project.less')
       .pipe(plumber())
       .pipe(less())
       .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
       .pipe(minifyCSS())
       .pipe(rename('styles.min.css'))
-      .pipe(gulp.dest('css/'))
+      .pipe(gulp.dest('./Builds/Prod/css/'))
       .pipe(browserSync.reload({stream:true}))
       .pipe(notify({ message: 'Less task complete' }));
 });
@@ -32,13 +33,13 @@ gulp.task('pre-process', function(){
 
 // Scripts task
 gulp.task('scripts', function() {
-	return gulp.src('js/script.js')
+	return gulp.src('./Builds/Dev/js/script.js')
 	.pipe(plumber())
 	.pipe(jshint())
 	.pipe(jshint.reporter('default'))
 	.pipe(uglify())
 	.pipe(rename('script.min.js'))
-	.pipe(gulp.dest('js/'))
+	.pipe(gulp.dest('./Builds/Prod/js/'))
     .pipe(browserSync.reload({stream:true}))
 	.pipe(notify({ message: 'Scripts task complete' }));
 });
@@ -49,7 +50,7 @@ gulp.task('scripts', function() {
 gulp.task('set-server', function() {
     browserSync.init(null, {
         server: {
-            baseDir: "./"
+            baseDir: "./Builds/Prod/"
         },
         port: 3000
     });
@@ -62,16 +63,31 @@ gulp.task('reload', function () {
 });
 
 
+gulp.task('minify-html', function() {
+  var opts = {
+    conditionals: true,
+    spare:true
+  };
+
+  return gulp.src('./Builds/Dev/*.html')
+    .pipe(minifyHTML(opts))
+    .pipe(gulp.dest('./Builds/Prod/'))
+
+    .pipe(browserSync.reload({stream:true}))
+	.pipe(notify({ message: 'HTML Minified!' }));
+});
+
+
 /*
    DEFAULT TASK
  • Process less then auto-prefixes and lints outputted css
  • Starts a server on port 3000
  • Reloads browsers when you change html or less files
 */
-gulp.task('default', ['pre-process', 'scripts', 'reload', 'set-server'], function(){
+gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'reload', 'set-server'], function(){
   gulp.start('pre-process');
-  gulp.watch('less/**/*.less', ['pre-process']);
-  gulp.watch('css/styles.min.css', ['reload']);
-  gulp.watch(['*.html'], ['reload']);
-  gulp.watch('js/*.js', ['scripts']);
+  gulp.watch('./Builds/Dev/less/**/*.less', ['pre-process']);
+  gulp.watch('./Builds/Prod/css/styles.min.css', ['reload']);
+  gulp.watch(['./Builds/Dev/*.html'], ['minify-html']);
+  gulp.watch('./Builds/Prod/js/*.js', ['scripts']);
 });
