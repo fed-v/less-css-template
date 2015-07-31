@@ -4,7 +4,6 @@
 jQuery(document).ready(function ($) {
 
     'use strict';
-    
 
     /****************************************/
     /***        Set copyright date       ***/
