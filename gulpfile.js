@@ -1,6 +1,7 @@
-// Gulp tasks
+//////////////////////////////////////////////////////
+///     Load Required Plugins
+/////////////////////////////////////////////////////
 
-// Load required plugins
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
     notify = require( 'gulp-notify' ),                   // Pop-up notifications.
@@ -9,7 +10,7 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
 	uglify = require('gulp-uglify'),
     size = require('gulp-size'),                         // Logs out the total size of files in the stream
-    autoprefixer = require('gulp-autoprefixer'),
+    autoprefixer = require('gulp-autoprefixer'),         // Parses CSS files and adds vendor prefixes to CSS rules
     minifyCSS = require('gulp-minify-css'),
     less = require('gulp-less'),
     rename = require('gulp-rename'),
@@ -19,7 +20,13 @@ var gulp = require('gulp'),
     browserReload = browserSync.reload;
 
 
-// Set file paths
+
+
+
+//////////////////////////////////////////////////////
+///     Set File Paths
+//////////////////////////////////////////////////////
+
 var basePath = {
   dev  : './builds/dev/',
   prod : './builds/prod/'
@@ -37,11 +44,18 @@ var prodAssets = {
   images  : basePath.prod + 'images/'
 };
 
-// List of JS files in order
+// Array of Javascript assets listed in the order you want to concatenate
 var jsAssets = [ devAssets.scripts + 'script.js'];
 
 
-// Less task
+
+
+
+//////////////////////////////////////////////////////
+///     Gulp Tasks
+//////////////////////////////////////////////////////
+
+// Less Task
 gulp.task('pre-process', function(){
       return gulp.src( devAssets.styles + 'project.less')
       .pipe(plumber({errorHandler: onError}))
@@ -57,7 +71,7 @@ gulp.task('pre-process', function(){
 });
 
 
-// Scripts task
+// Scripts Task
 gulp.task('scripts', function() {
 	return gulp.src(jsAssets)
     .pipe(plumber({errorHandler: onError}))
@@ -73,7 +87,7 @@ gulp.task('scripts', function() {
 });
 
 
-// Initialize browser-sync which starts a static server also allows for browsers to reload on filesave
+// Initialize Browser-sync
 gulp.task('set-server', function() {
     browserSync.init(null, {
         server: {
@@ -84,13 +98,13 @@ gulp.task('set-server', function() {
 });
 
 
-// Reload browsers
+// Reload Browsers
 gulp.task('reload', function () {
     browserSync.reload();
 });
 
 
-// Minify HTML task
+// Minify HTML Task
 gulp.task('minify-html', function() {
     return gulp.src( basePath.dev + '*.html')
     .pipe(plumber({errorHandler: onError}))
@@ -120,12 +134,7 @@ var onError = function(err) {
 };
 
 
-/*
-   DEFAULT TASK
- • Process less then auto-prefixes and lints outputted css
- • Starts a server on port 3000
- • Reloads browsers when you change html or less files
-*/
+// Default Task
 gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'set-server'], function(){
       gulp.watch( devAssets.styles + '*.less', ['pre-process']);
       gulp.watch( devAssets.scripts + '*.js', ['scripts']);
