@@ -3,7 +3,7 @@
 // Load required plugins
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
-    notify = require( 'gulp-notify' ),                   // Pop-up notifications. For log messages you can use 'gulp-util'.
+    notify = require( 'gulp-notify' ),                   // Pop-up notifications.
     plumber = require('gulp-plumber'),                   // Prevents gulp.watch from crashing.
     watch = require('gulp-watch'),
     jshint = require('gulp-jshint'),
@@ -19,20 +19,38 @@ var gulp = require('gulp'),
     browserReload = browserSync.reload;
 
 
-// Store Javascript source files in an array in the order you want to combine them.
-var jsSources = ['./builds/dev/js/script.js'];
+// Set file paths
+var basePath = {
+  dev  : './builds/dev/',
+  prod : './builds/prod/'
+};
+
+var devAssets = {
+  styles  : basePath.dev + 'less/',
+  scripts : basePath.dev + 'js/',
+  images  : basePath.dev + 'images/'
+};
+
+var prodAssets = {
+  styles  : basePath.prod + 'css/',
+  scripts : basePath.prod + 'js/',
+  images  : basePath.prod + 'images/'
+};
+
+// List of JS files in order
+var jsAssets = [ devAssets.scripts + 'script.js'];
 
 
 // Less task
 gulp.task('pre-process', function(){
-      return gulp.src('./builds/dev/less/project.less')
+      return gulp.src( devAssets.styles + 'project.less')
       .pipe(plumber({errorHandler: onError}))
       .pipe(size({ title: "Source file", showFiles: true}))
       .pipe(less())
       .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
       .pipe(minifyCSS())
       .pipe(rename('styles.min.css'))
-      .pipe(gulp.dest('./builds/prod/css/'))
+      .pipe(gulp.dest(prodAssets.styles))
       .pipe(size({ title: "Compressed file", showFiles: true}))
       .pipe(browserSync.reload({stream:true}))
       .pipe(notify({ message: 'Less task complete' }));
@@ -41,14 +59,14 @@ gulp.task('pre-process', function(){
 
 // Scripts task
 gulp.task('scripts', function() {
-	return gulp.src(jsSources)
+	return gulp.src(jsAssets)
     .pipe(plumber({errorHandler: onError}))
     .pipe(size({ title: "Source file", showFiles: true}))
 	.pipe(jshint())
 	.pipe(jshint.reporter('default'))
 	.pipe(uglify())
     .pipe(concat('script.min.js'))
-	.pipe(gulp.dest('./builds/prod/js/'))
+	.pipe(gulp.dest(prodAssets.scripts))
     .pipe(size({ title: "Compressed file", showFiles: true}))
     .pipe(browserSync.reload({stream:true}))
 	.pipe(notify({ message: 'Scripts task complete' }));
@@ -59,7 +77,7 @@ gulp.task('scripts', function() {
 gulp.task('set-server', function() {
     browserSync.init(null, {
         server: {
-            baseDir: "./builds/prod/"
+            baseDir: basePath.prod
         },
         port: 3000
     });
@@ -74,14 +92,15 @@ gulp.task('reload', function () {
 
 // Minify HTML task
 gulp.task('minify-html', function() {
-  var opts = {
-    conditionals: true,
-    spare:true
-  };
-
-  return gulp.src('./builds/dev/*.html')
-    .pipe(minifyHTML(opts))
-    .pipe(gulp.dest('./builds/prod/'))
+    return gulp.src( basePath.dev + '*.html')
+    .pipe(plumber({errorHandler: onError}))
+    .pipe(size({ title: "Source file", showFiles: true}))
+    .pipe(minifyHTML({
+          conditionals: true,
+          spare:true
+    }))
+    .pipe(gulp.dest(basePath.prod))
+    .pipe(size({ title: "Compressed file", showFiles: true}))
     .pipe(browserSync.reload({stream:true}))
 	.pipe(notify({ message: 'HTML task complete' }));
 });
@@ -107,10 +126,8 @@ var onError = function(err) {
  • Starts a server on port 3000
  • Reloads browsers when you change html or less files
 */
-gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'reload', 'set-server'], function(){
-  gulp.start('pre-process');
-  gulp.watch('./builds/dev/less/**/*.less', ['pre-process']);
-  gulp.watch('./builds/prod/css/styles.min.css', ['reload']);
-  gulp.watch(['./builds/dev/*.html'], ['minify-html']);
-  gulp.watch('./builds/dev/js/*.js', ['scripts']);
+gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'set-server'], function(){
+      gulp.watch( devAssets.styles + '*.less', ['pre-process']);
+      gulp.watch( devAssets.scripts + '*.js', ['scripts']);
+      gulp.watch(basePath.dev + '*.html', ['minify-html']);
 });
