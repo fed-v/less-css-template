@@ -139,4 +139,5 @@ gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'set-server'], fu
       gulp.watch( devAssets.styles + '*.less', ['pre-process']);
       gulp.watch( devAssets.scripts + '*.js', ['scripts']);
       gulp.watch(basePath.dev + '*.html', ['minify-html']);
+      gulp.watch(prodAssets.images + '**', ['reload']);
 });
