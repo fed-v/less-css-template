@@ -17,6 +17,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),                     // Concats JS files in a single file (in case we have more than one JS library)
     minifyHTML = require('gulp-minify-html'),
     browserSync = require('browser-sync'),
+    changed = require('gulp-changed'),                  // Checks if the file in stream has changed before continuing
     browserReload = browserSync.reload;
 
 
@@ -104,11 +105,12 @@ gulp.task('reload', function () {
 });
 
 
-// Minify HTML Task
+// Minify HTML Task (only those files that have changed!)
 gulp.task('minify-html', function() {
     return gulp.src( basePath.dev + '*.html')
     .pipe(plumber({errorHandler: onError}))
     .pipe(size({ title: "Source file", showFiles: true}))
+    .pipe(changed(basePath.prod))
     .pipe(minifyHTML({
           conditionals: true,
           spare:true
@@ -136,8 +138,8 @@ var onError = function(err) {
 
 // Default Task
 gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'set-server'], function(){
-      gulp.watch( devAssets.styles + '*.less', ['pre-process']);
-      gulp.watch( devAssets.scripts + '*.js', ['scripts']);
-      gulp.watch(basePath.dev + '*.html', ['minify-html']);
-      gulp.watch(prodAssets.images + '**', ['reload']);
+      gulp.watch( devAssets.styles + '**/*.less', ['pre-process']);
+      gulp.watch( devAssets.scripts + '**/*.js', ['scripts']);
+      gulp.watch(basePath.dev + '**/*.html', ['minify-html']);
+      gulp.watch(prodAssets.images + '**', ['reload']);         // Watch for changes in any of the prod images
 });
