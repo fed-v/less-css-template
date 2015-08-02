@@ -17,6 +17,8 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),                     // Concats JS files in a single file (in case we have more than one JS library)
     minifyHTML = require('gulp-minify-html'),
     browserSync = require('browser-sync'),
+    imagemin = require('gulp-imagemin'),
+    pngquant = require('imagemin-pngquant'),
     changed = require('gulp-changed'),                  // Checks if the file in stream has changed before continuing
     browserReload = browserSync.reload;
 
@@ -122,6 +124,24 @@ gulp.task('minify-html', function() {
 });
 
 
+// Image Optimization Task (Run this task before uploading project to server.)
+gulp.task('images', function() {
+    return gulp.src(prodAssets.images + '**/*.{gif,jpg,png}')
+    .pipe(plumber({errorHandler: onError}))
+    .pipe(size({ title: "Source file", showFiles: true}))
+    .pipe(imagemin({
+        progressive: true,
+        optimizationLevel: 5,
+        interlaced: true,
+        svgoPlugins: [{removeViewBox: false}],
+        use: [pngquant()]
+    }))
+    .pipe(gulp.dest(prodAssets.images))
+    .pipe(size({ title: "Compressed file", showFiles: true}))
+	.pipe(notify({ message: 'Images task complete' }));
+});
+
+
 // Error Handler
 var onError = function(err) {
     notify.onError({
@@ -137,7 +157,7 @@ var onError = function(err) {
 
 
 // Default Task
-gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'set-server'], function(){
+gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'images', 'set-server'], function(){
       gulp.watch( devAssets.styles + '**/*.less', ['pre-process']);
       gulp.watch( devAssets.scripts + '**/*.js', ['scripts']);
       gulp.watch(basePath.dev + '**/*.html', ['minify-html']);
