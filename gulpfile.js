@@ -1,3 +1,8 @@
+/*jslint node: true */
+/*global require, console*/
+
+'use strict';
+
 //////////////////////////////////////////////////////
 ///     Load Required Plugins
 /////////////////////////////////////////////////////
@@ -19,39 +24,47 @@ var gulp = require('gulp'),
     browserSync = require('browser-sync'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
-    changed = require('gulp-changed'),                  // Checks if the file in stream has changed before continuing
-    browserReload = browserSync.reload;
+    changed = require('gulp-changed');                  // Checks if the file in stream has changed before continuing
 
 
 
 
 
 //////////////////////////////////////////////////////
-///     Set File Paths
+///     Declare Variables
 //////////////////////////////////////////////////////
 
-var basePath = {
+// Set File Paths
+var BASE_PATH = {
   dev  : './builds/dev/',
   prod : './builds/prod/'
 };
 
-var devAssets = {
-  styles  : basePath.dev + 'less/',
-  scripts : basePath.dev + 'js/',
-  images  : basePath.dev + 'images/'
+var DEV_ASSETS = {
+  styles  : BASE_PATH.dev + 'less/',
+  scripts : BASE_PATH.dev + 'js/',
+  images  : BASE_PATH.dev + 'images/'
 };
 
-var prodAssets = {
-  styles  : basePath.prod + 'css/',
-  scripts : basePath.prod + 'js/',
-  images  : basePath.prod + 'images/'
+var PROD_ASSETS = {
+  styles  : BASE_PATH.prod + 'css/',
+  scripts : BASE_PATH.prod + 'js/',
+  images  : BASE_PATH.prod + 'images/'
 };
 
 // Array of Javascript assets listed in the order you want to concatenate
-var jsAssets = [ devAssets.scripts + 'script.js'];
+var JS_ASSETS = [ DEV_ASSETS.scripts + 'script.js' ];
 
-
-
+// Browser Definitions for Autoprefixer
+var AUTOPREFIXER_BROWSERS = [
+  'last 3 versions',
+  'ie >= 8',
+  'ios >= 7',
+  'android >= 4.4',
+  'bb >= 10',
+  'safari >= 5',
+  'opera 12.1',
+];
 
 
 //////////////////////////////////////////////////////
@@ -59,33 +72,33 @@ var jsAssets = [ devAssets.scripts + 'script.js'];
 //////////////////////////////////////////////////////
 
 // Less Task
-gulp.task('pre-process', function(){
-      return gulp.src( devAssets.styles + 'project.less')
-      .pipe(plumber({errorHandler: onError}))
-      .pipe(size({ title: "Source file", showFiles: true}))
+gulp.task('pre-process', function() {
+      return gulp.src(DEV_ASSETS.styles + 'project.less')
+      .pipe(plumber({ errorHandler: onError }))
+      .pipe(size({ title: "Source file", showFiles: true }))
       .pipe(less())
-      .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
+      .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
       .pipe(minifyCSS())
       .pipe(rename('styles.min.css'))
-      .pipe(gulp.dest(prodAssets.styles))
-      .pipe(size({ title: "Compressed file", showFiles: true}))
-      .pipe(browserSync.reload({stream:true}))
+      .pipe(gulp.dest(PROD_ASSETS.styles))
+      .pipe(size({ title: "Compressed file", showFiles: true }))
+      .pipe(browserSync.reload({ stream:true }))
       .pipe(notify({ message: 'Less task complete' }));
 });
 
 
 // Scripts Task
 gulp.task('scripts', function() {
-	return gulp.src(jsAssets)
-    .pipe(plumber({errorHandler: onError}))
-    .pipe(size({ title: "Source file", showFiles: true}))
+	return gulp.src(JS_ASSETS)
+    .pipe(plumber({ errorHandler: onError }))
+    .pipe(size({ title: "Source file", showFiles: true }))
 	.pipe(jshint())
 	.pipe(jshint.reporter('default'))
 	.pipe(uglify())
     .pipe(concat('script.min.js'))
-	.pipe(gulp.dest(prodAssets.scripts))
-    .pipe(size({ title: "Compressed file", showFiles: true}))
-    .pipe(browserSync.reload({stream:true}))
+	.pipe(gulp.dest(PROD_ASSETS.scripts))
+    .pipe(size({ title: "Compressed file", showFiles: true }))
+    .pipe(browserSync.reload({ stream:true } ))
 	.pipe(notify({ message: 'Scripts task complete' }));
 });
 
@@ -94,7 +107,7 @@ gulp.task('scripts', function() {
 gulp.task('set-server', function() {
     browserSync.init(null, {
         server: {
-            baseDir: basePath.prod
+            baseDir: BASE_PATH.prod
         },
         port: 3000
     });
@@ -109,35 +122,36 @@ gulp.task('reload', function () {
 
 // Minify HTML Task (only those files that have changed!)
 gulp.task('minify-html', function() {
-    return gulp.src( basePath.dev + '*.html')
-    .pipe(plumber({errorHandler: onError}))
-    .pipe(size({ title: "Source file", showFiles: true}))
-    .pipe(changed(basePath.prod))
+    return gulp.src(BASE_PATH.dev + '*.html')
+    .pipe(plumber({ errorHandler: onError }))
+    .pipe(size({ title: "Source file", showFiles: true }))
+    .pipe(changed(BASE_PATH.prod))
     .pipe(minifyHTML({
           conditionals: true,
           spare:true
     }))
-    .pipe(gulp.dest(basePath.prod))
-    .pipe(size({ title: "Compressed file", showFiles: true}))
-    .pipe(browserSync.reload({stream:true}))
+    .pipe(gulp.dest(BASE_PATH.prod))
+    .pipe(size({ title: "Compressed file", showFiles: true }))
+    .pipe(browserSync.reload({ stream:true }))
 	.pipe(notify({ message: 'HTML task complete' }));
 });
 
 
 // Image Optimization Task (Run this task before uploading project to server.)
+// I consider this a one shot task and, as such, I don’t include it in my watch task.
 gulp.task('images', function() {
-    return gulp.src(prodAssets.images + '**/*.{gif,jpg,png}')
-    .pipe(plumber({errorHandler: onError}))
-    .pipe(size({ title: "Source file", showFiles: true}))
+    return gulp.src(PROD_ASSETS.images + '**/*.{gif,jpg,png}')
+    .pipe(plumber({ errorHandler: onError }))
+    .pipe(size({ title: "Source file", showFiles: true }))
     .pipe(imagemin({
         progressive: true,
         optimizationLevel: 5,
         interlaced: true,
-        svgoPlugins: [{removeViewBox: false}],
-        use: [pngquant()]
+        svgoPlugins: [{ removeViewBox: false }, { removeUselessStrokeAndFill:false }],
+        use: [ pngquant() ]
     }))
-    .pipe(gulp.dest(prodAssets.images))
-    .pipe(size({ title: "Compressed file", showFiles: true}))
+    .pipe(gulp.dest(PROD_ASSETS.images))
+    .pipe(size({ title: "Compressed file", showFiles: true }))
 	.pipe(notify({ message: 'Images task complete' }));
 });
 
@@ -157,9 +171,9 @@ var onError = function(err) {
 
 
 // Default Task
-gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'images', 'set-server'], function(){
-      gulp.watch( devAssets.styles + '**/*.less', ['pre-process']);
-      gulp.watch( devAssets.scripts + '**/*.js', ['scripts']);
-      gulp.watch(basePath.dev + '**/*.html', ['minify-html']);
-      gulp.watch(prodAssets.images + '**', ['reload']);         // Watch for changes in any of the prod images
+gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'images', 'set-server'], function() {
+      gulp.watch( DEV_ASSETS.styles + '**/*.less', ['pre-process'] );
+      gulp.watch( DEV_ASSETS.scripts + '**/*.js', ['scripts'] );
+      gulp.watch( BASE_PATH.dev + '**/*.html', ['minify-html'] );
+      gulp.watch( PROD_ASSETS.images + '**', ['reload'] );         // Watch for changes in any of the prod images
 });
