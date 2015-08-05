@@ -24,6 +24,7 @@ var gulp = require('gulp'),
     browserSync = require('browser-sync'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
+    del = require('del'),
     changed = require('gulp-changed');                  // Checks if the file in stream has changed before continuing
 
 
@@ -71,8 +72,18 @@ var AUTOPREFIXER_BROWSERS = [
 ///     Gulp Tasks
 //////////////////////////////////////////////////////
 
+// Clean Task
+gulp.task('clean', function(cb) {
+    del([
+        PROD_ASSETS.styles + '*',
+        PROD_ASSETS.scripts + 'script.min.js',
+        BASE_PATH.prod + 'index.html'
+    ], cb);
+});
+
+
 // Less Task
-gulp.task('pre-process', function() {
+gulp.task('styles', function() {
       return gulp.src(DEV_ASSETS.styles + 'project.less')
       .pipe(plumber({ errorHandler: onError }))
       .pipe(size({ title: "Source file", showFiles: true }))
@@ -83,7 +94,7 @@ gulp.task('pre-process', function() {
       .pipe(gulp.dest(PROD_ASSETS.styles))
       .pipe(size({ title: "Compressed file", showFiles: true }))
       .pipe(browserSync.reload({ stream:true }))
-      .pipe(notify({ message: 'Less task complete' }));
+      .pipe(notify({ message: 'Styles task complete' }));
 });
 
 
@@ -171,8 +182,8 @@ var onError = function(err) {
 
 
 // Default Task
-gulp.task('default', ['pre-process', 'scripts', 'minify-html', 'images', 'set-server'], function() {
-      gulp.watch( DEV_ASSETS.styles + '**/*.less', ['pre-process'] );
+gulp.task('default', ['styles', 'scripts', 'minify-html', 'images', 'set-server'], function() {
+      gulp.watch( DEV_ASSETS.styles + '**/*.less', ['styles'] );
       gulp.watch( DEV_ASSETS.scripts + '**/*.js', ['scripts'] );
       gulp.watch( BASE_PATH.dev + '**/*.html', ['minify-html'] );
       gulp.watch( PROD_ASSETS.images + '**', ['reload'] );         // Watch for changes in any of the prod images
