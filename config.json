@@ -25,7 +25,5 @@
       "bb >= 10",
       "safari >= 5",
       "opera 12.1"
-    ],
-
-    "JS_ASSETS" : "./builds/dev/js/script.js"
+    ]
 }

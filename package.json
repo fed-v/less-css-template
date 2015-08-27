@@ -20,12 +20,12 @@
     "url": "https://github.com/fed-v/less-css-template.git/issues"
   },
   "devDependencies": {
-    "browser-sync": "^2.7.7",
+    "browser-sync": "^2.8.2",
+    "browserify": "^11.0.1",
     "del": "^1.2.0",
-    "gulp": "^3.8.2",
-    "gulp-autoprefixer": "2.3.1",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^2.3.1",
     "gulp-changed": "^1.2.1",
-    "gulp-concat": "^2.6.0",
     "gulp-imagemin": "^2.3.0",
     "gulp-jshint": "^1.11.2",
     "gulp-less": "^3.0.3",
@@ -33,11 +33,12 @@
     "gulp-minify-html": "^1.0.4",
     "gulp-notify": "^2.2.0",
     "gulp-plumber": "^1.0.1",
-    "gulp-rename": "^1.2.0",
+    "gulp-rename": "^1.2.2",
     "gulp-size": "^1.2.3",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.2.4",
-    "imagemin-pngquant": "^4.1.2"
+    "imagemin-pngquant": "^4.1.2",
+    "vinyl-source-stream": "^1.1.0"
   }
 }

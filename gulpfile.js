@@ -4,7 +4,7 @@
 'use strict';
 
 //////////////////////////////////////////////////////
-///     Load Required Plugins
+///     Load Required Dependencies
 /////////////////////////////////////////////////////
 
 var gulp = require('gulp'),
@@ -19,14 +19,17 @@ var gulp = require('gulp'),
     minifyCSS = require('gulp-minify-css'),
     less = require('gulp-less'),
     rename = require('gulp-rename'),
-    concat = require('gulp-concat'),                     // Concats JS files in a single file (in case we have more than one JS library)
     minifyHTML = require('gulp-minify-html'),
     browserSync = require('browser-sync'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
     del = require('del'),
     changed = require('gulp-changed'),                  // Checks if the file in stream has changed before continuing
+    browserify = require('browserify'),
+    source = require('vinyl-source-stream'),
     config = require('./config.json');                  // Import JSON file with all configuration variables
+
+
 
 
 
@@ -34,17 +37,20 @@ var gulp = require('gulp'),
 ///     Gulp Tasks
 //////////////////////////////////////////////////////
 
-// Clean Task
+// Clean Task: Removes CSS, Javascript and HTML files from production environment
+// for a clean start.
 gulp.task('clean', function(cb) {
     del([
         config.PROD_ASSETS.styles + '*',
         config.PROD_ASSETS.scripts + 'script.min.js',
+        config.DEV_ASSETS.scripts + 'bundled.js',
         config.BASE_PATH.prod + 'index.html'
     ], cb);
 });
 
 
-// Less Task
+// Less Task: Compiles less files into one minified css file and
+// pipes the result to production folder.
 gulp.task('styles', function() {
     return gulp.src(config.DEV_ASSETS.styles + 'project.less')
     .pipe(plumber({ errorHandler: onError }))
@@ -60,15 +66,27 @@ gulp.task('styles', function() {
 });
 
 
-// Scripts Task
-gulp.task('scripts', function() {
-	return gulp.src(config.JS_ASSETS)
+// Browserify Task: Bundles all client-side Javascript code into one file
+gulp.task('browserify', function() {
+    return browserify({ entries: [config.DEV_ASSETS.scripts + 'script.js'] }, { debug: true })
+    .bundle()
+    .on('error', onError)
+    .pipe(source('bundled.js'))
+    .pipe(gulp.dest(config.DEV_ASSETS.scripts))
+	.pipe(notify({ message: 'Browserify task complete' }));
+});
+
+
+// Scripts Task: Fetches Bundled javascript file and uglifies it.
+// Then pipes the result to production folder.
+gulp.task('scripts', ['browserify'], function() {       // Don't start 'scripts' until 'browserify' has finished!
+	return gulp.src(config.DEV_ASSETS.scripts + 'bundled.js')
     .pipe(plumber({ errorHandler: onError }))
     .pipe(size({ title: "Source file", showFiles: true }))
 	.pipe(jshint())
 	.pipe(jshint.reporter('default'))
 	.pipe(uglify())
-    .pipe(concat('script.min.js'))
+    .pipe(rename('script.min.js'))
 	.pipe(gulp.dest(config.PROD_ASSETS.scripts))
     .pipe(size({ title: "Compressed file", showFiles: true }))
     .pipe(browserSync.reload({ stream:true } ))
@@ -76,7 +94,8 @@ gulp.task('scripts', function() {
 });
 
 
-// Initialize Browser-sync
+// Set-server task: Creates a server in port 3000 using Browser-sync and
+// opens default browser in that localhost. Page is reloaded on change.
 gulp.task('set-server', function() {
     browserSync.init(null, {
         server: {
@@ -87,7 +106,7 @@ gulp.task('set-server', function() {
 });
 
 
-// Reload Browsers
+// Reload Browser
 gulp.task('reload', function () {
     browserSync.reload();
 });
@@ -110,7 +129,7 @@ gulp.task('minify-html', function() {
 });
 
 
-// Image Optimization Task (Run this task before uploading project to server.)
+// Image Optimization Task: (Run this task before uploading project to server.)
 // I consider this a one shot task and, as such, I don’t include it in my watch task.
 gulp.task('images', function() {
     return gulp.src(config.PROD_ASSETS.images + '**/*.{gif,jpg,png}')
@@ -143,10 +162,11 @@ var onError = function(err) {
 };
 
 
-// Default Task
-gulp.task('default', ['styles', 'scripts', 'minify-html', 'images', 'set-server'], function() {
+// Default Task: Executes all the declared tasks except clean and watches
+// development environment for any changes made.
+gulp.task('default', ['styles', 'browserify', 'scripts', 'minify-html', 'images', 'set-server'], function() {
     gulp.watch( config.DEV_ASSETS.styles + '**/*.less', ['styles'] );
-    gulp.watch( config.DEV_ASSETS.scripts + '**/*.js', ['scripts'] );
+    gulp.watch( config.DEV_ASSETS.scripts + '**/*.js', ['browserify', 'scripts'] );
     gulp.watch( config.BASE_PATH.dev + '**/*.html', ['minify-html'] );
     gulp.watch( config.PROD_ASSETS.images + '**', ['reload'] );         // Watch for changes in any of the prod images
 });
