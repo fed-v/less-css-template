@@ -1,3 +1,16 @@
+/*-----------------------------------------------------------------------------
+[client] Screen Stylesheet
+
+version:   1.0
+date:      01/03/07
+author:    [your email]
+email:     [you at domain dot com]
+website:   [your domain]
+version history: [location of file]
+-----------------------------------------------------------------------------*/
+
+
+
 //////////////////////////////////////////////////////
 ///     Load Mixens
 //////////////////////////////////////////////////////
@@ -8,40 +21,33 @@
 @import "variables";
 @import "html5-boilerplate-defaults.less";
 @import "my-mixens.less";
+@import "clean.less";
 
-
+// Import Web Components
+@import "header.less";
+@import "footer.less";
+@import "forms.less";
+@import "tables.less";
 
 
 
 //////////////////////////////////////////////////////
-///     Author's Custom Styles
+///     General Styles
 //////////////////////////////////////////////////////
 
 
-html{
+html {
+	font-size: 1em;
 	overflow-y: scroll;
-   -ms-overflow-style: scrollbar;
-
+   	-ms-overflow-style: scrollbar;
+   	-webkit-font-smoothing: antialiased;
 }
 
 
-html, body{
-	height: 100%;
+body {
     font-family: @fontFamily;
-	-webkit-font-smoothing: antialiased;
-}
-
-header {
-   width:100%;
-   height: 70px;
-   color: #FFFFFF;
-   background: @base-color;
-   padding: 20px 0 0 25px;
-}
-
-
-h1 {
-    margin:0px;
+	font-size: 100%;
+	line-height: 1.2;
 }
 
 
@@ -50,22 +56,41 @@ main {
    margin: auto;
    background: #FFFFFF;
    padding: 30px 25px 50px 25px;
-   font-size: 16px;
    box-shadow: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
    min-height: 900px;  /* Get rid of this after adding some content */
 }
 
 
-footer {
-    width:100%;
-    height: 75px;
-    text-align: center;
-    background: #424242;
-    color: #9E9E9E;
-    padding-top: 30px;
-    letter-spacing: 1px;
+// Header Styles
+h1 {
+    font-size: 2.2em;
 }
 
+h2 {
+    font-size: 2.0em;
+}
+
+h3 {
+    font-size: 1.8em;
+}
+
+h4 {
+    font-size: 1.6em;
+}
+
+h5 {
+    font-size: 1.4em;
+}
+
+p {
+    font-size: 1em;
+}
+
+
+// Float Classes
+.clear { clear:both; }
+.right { float: right; }
+.left { float: left; }
 
 
 

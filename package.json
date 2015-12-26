@@ -2,6 +2,7 @@
   "name": "less-is-more",
   "version": "2.1.0",
   "description": "A Less front end template",
+  "readme": "README.md",
   "main": "gulpfile.js",
   "repository": {
     "type": "git",

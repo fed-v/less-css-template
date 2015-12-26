@@ -15,4 +15,10 @@ jQuery(document).ready(function ($) {
     var setCopyrightDate = require('./copyrightDate');
     setCopyrightDate();
 
+
+    // Hamburger Menu Handler
+	$('#hamburger-menu').click(function(){
+		$(this).toggleClass('open');
+	});
+
 });
