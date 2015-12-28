@@ -15,19 +15,22 @@ version history: [location of file]
 ///     Load Mixens
 //////////////////////////////////////////////////////
 
-/*@import "preboot.less";*/    // Optional Less Mixens Library
-@import "normalize.less";
-@import "lesshat.less";
-@import "variables";
-@import "html5-boilerplate-defaults.less";
-@import "my-mixens.less";
-@import "clean.less";
+@import "defaults/normalize.less";
+@import "defaults/html5-boilerplate-defaults.less";
+@import "defaults/clean.less";
+@import "defaults/forms.less";
+@import "defaults/tables.less";
+@import "defaults/variables";
+
+
+/*@import "mixens/preboot.less";*/    // Optional Less Mixens Library
+@import "mixens/lesshat.less";
+@import "mixens/my-mixens.less";
+
 
 // Import Web Components
-@import "header.less";
-@import "footer.less";
-@import "forms.less";
-@import "tables.less";
+@import "sections/header.less";
+@import "sections/footer.less";
 
 
 
