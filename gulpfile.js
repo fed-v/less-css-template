@@ -27,7 +27,8 @@ var gulp = require('gulp'),
     changed = require('gulp-changed'),                  // Checks if the file in stream has changed before continuing
     browserify = require('browserify'),
     source = require('vinyl-source-stream'),
-    config = require('./config.json');                  // Import JSON file with all configuration variables
+    jasmine = require('gulp-jasmine'),                  // Javascript behavior-driven development framework for testing
+    config = require('./config.json');                  // Import JSON file with all environmental variables
 
 
 
@@ -93,6 +94,13 @@ gulp.task('scripts', ['browserify'], function() {       // Don't start 'scripts'
 	.pipe(notify({ message: 'Scripts task complete' }));
 });
 
+
+gulp.task('jasmine', ['scripts'], function () {
+	return gulp.src('spec/test.js')     // gulp-jasmine works on filepaths so you can't have any plugins before it
+    .pipe(plumber({ errorHandler: onError }))
+    .pipe(jasmine())
+    .pipe(notify({ message: 'Jasmine task complete' }));
+});
 
 // Set-server task: Creates a server in port 3000 using Browser-sync and
 // opens default browser in that localhost. Page is reloaded on change.
@@ -164,9 +172,9 @@ var onError = function(err) {
 
 // Default Task: Executes all the declared tasks except clean and watches
 // development environment for any changes made.
-gulp.task('default', ['styles', 'browserify', 'scripts', 'minify-html', 'images', 'set-server'], function() {
+gulp.task('default', ['styles', 'browserify', 'scripts', 'jasmine', 'minify-html', 'images', 'set-server'], function() {
     gulp.watch( config.DEV_ASSETS.styles + '**/*.less', ['styles'] );
-    gulp.watch( config.DEV_ASSETS.scripts + '**/*.js', ['browserify', 'scripts'] );
+    gulp.watch( config.DEV_ASSETS.scripts + '**/*.js', ['browserify', 'scripts', 'jasmine'] );
     gulp.watch( config.BASE_PATH.dev + '**/*.html', ['minify-html'] );
     gulp.watch( config.PROD_ASSETS.images + '**', ['reload'] );         // Watch for changes in any of the prod images
 });
