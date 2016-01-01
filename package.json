@@ -21,7 +21,7 @@
     "url": "https://github.com/fed-v/less-css-template.git/issues"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp jasmine"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
